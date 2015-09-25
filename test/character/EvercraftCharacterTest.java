@@ -2,11 +2,14 @@ package character;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import character.Alignment;
@@ -15,6 +18,14 @@ import character.EvercraftCharacter;
 
 public class EvercraftCharacterTest {
 	
+	private static final String ABILITY_NAME = "abilityName";
+
+	private static final int DEFAULT_ABILITY_SCORE = 10;
+
+	private static final int ABILITY_SCORE = 5;
+	
+	private static final String abilityName = ABILITY_NAME;
+
 	@Mock
 	Alignment alignment;
 	
@@ -26,9 +37,13 @@ public class EvercraftCharacterTest {
 	
 	@Mock
 	Level level;
+
+	@Mock
+	private Abilities abilities;
 	
+	@InjectMocks
 	EvercraftCharacter underTest;
-	
+
 	@Before
 	public void setup() {
 		initMocks(this);
@@ -67,26 +82,15 @@ public class EvercraftCharacterTest {
 	}
 	
 	@Test
-	public void shouldSetStrength() {
-		underTest.setStrength(5);
-		assertThat(underTest.getStrength(), is(5));
+	public void shouldSetAbilityScore() {
+		underTest.setAbilityScore(ABILITY_NAME, ABILITY_SCORE);
+		verify(abilities, times(1)).setAbilityScore(ABILITY_NAME, ABILITY_SCORE);
 	}
 	
 	@Test
-	public void shouldDefaultStrengthTo10(){
-		assertThat(underTest.getStrength(), is(10));
-	}
-	
-	@Test
-	public void shouldNotSetStrengthBelow1() {
-		underTest.setStrength(-1000);
-		assertThat(underTest.getStrength(), is(1));
-	}
-	
-	@Test
-	public void shouldNotSetStrengthAbove20() {
-		underTest.setStrength(21);
-		assertThat(underTest.getStrength(), is(20));
+	public void shouldGetAbilityScore() {
+		when(abilities.getAbilityScore(ABILITY_NAME)).thenReturn(ABILITY_SCORE);
+		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(ABILITY_SCORE));
 	}
 	
 	@Test

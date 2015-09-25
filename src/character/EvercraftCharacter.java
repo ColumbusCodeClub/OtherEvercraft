@@ -1,5 +1,8 @@
 package character;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class EvercraftCharacter {
 
@@ -8,6 +11,7 @@ public class EvercraftCharacter {
 	private Alignment alignment;
 	private Integer armorClass = 10;
 	private Integer hitPoints = 5;
+	private Abilities abilities = new Abilities();
 	private Integer strength = 10;
 	private Level level;
 	
@@ -22,7 +26,7 @@ public class EvercraftCharacter {
 	public int characterLevelValue() {
 		return level.getLevel();
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -60,14 +64,12 @@ public class EvercraftCharacter {
 		hitPoints--;
 	}
 
-	public void setStrength(int i) {
-		if (i < 1) i = 1;
-		if (i > 20) i = 20;
-		this.strength = i;
-	}
-	
-	public Integer getStrength() {
-		return strength;
+	public void setAbilityScore(String abilityName, int abilityScore) {
+		abilities.setAbilityScore(abilityName, abilityScore);
 	}
 
+	public int getAbilityScore(String abilityName) {
+		return abilities.getAbilityScore(abilityName);
+	}
+	
 }
