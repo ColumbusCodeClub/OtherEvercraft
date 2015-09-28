@@ -2,12 +2,14 @@ package battle;
 
 import character.Die;
 import character.EvercraftCharacter;
+import character.ModifiedCharacter;
 
 public class EvercraftBattle {
 
 	private static Die die;
 	private int dieRoll;
-	private EvercraftCharacter aggressor;
+	private ModifiedCharacter aggressor;
+	private ModifiedCharacter victim;
 	
 	private static int HIT = 1;
 	private static int CRITICAL_HIT = 2;
@@ -16,27 +18,20 @@ public class EvercraftBattle {
 		this.die = die;
 	}
 
-	public void battle(EvercraftCharacter aggressor, EvercraftCharacter victim) {
+	public void battle(ModifiedCharacter aggressor, ModifiedCharacter victim) {
 		dieRoll = die.roll();
 		this.aggressor = aggressor;
-		if (!shouldTakeHit(victim)) return;
+		this.victim = victim;
+		if (!shouldApplyHitToVictim()) return;
 		if (isCriticalRoll()){
-			victim.takeHit(Math.max(CRITICAL_HIT + 2*addStrengthModifier(), 1));
+			victim.takeHit(aggressor.getCriticalHitAttackPower());
 		}else{
-			victim.takeHit(Math.max(HIT + addStrengthModifier(), 1));
+			victim.takeHit(aggressor.getAttackPower());
 		}
 	}
 	
-	private boolean shouldTakeHit(EvercraftCharacter victim) {
-		return (dieRoll + addRollValueOfOneForEach2LevelsOfCharacter() + addStrengthModifier()) >= victim.getArmorClass();
-	}
-	
-	private int addRollValueOfOneForEach2LevelsOfCharacter() {
-		return aggressor.characterLevelValue() / 2;
-	}
-	
-	private int addStrengthModifier() {
-		return -5 + (int)Math.floor(aggressor.getAbilityScore("strength")/2);
+	private boolean shouldApplyHitToVictim() {
+		return (dieRoll + aggressor.getRollModifier()) >= victim.getDefense();
 	}
 	
 	private boolean isCriticalRoll() {

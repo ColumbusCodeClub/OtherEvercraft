@@ -12,7 +12,6 @@ public class EvercraftCharacter {
 	private Integer armorClass = 10;
 	private Integer hitPoints = 5;
 	private Abilities abilities = new Abilities();
-	private Integer strength = 10;
 	private Level level;
 	
 	public EvercraftCharacter(Level level) {
@@ -48,22 +47,9 @@ public class EvercraftCharacter {
 	}
 
 	public Integer getHitPoints() {
-		return hitPoints + levelHitPointIncrease();
-	}
-
-	private int levelHitPointIncrease() {
-		return level.getLevel() - INITIAL_LEVEL_OFFSET;
+		return hitPoints;
 	}
 	
-	
-	public boolean isAttackHit(Die die, EvercraftCharacter opponent) {
-		return die.roll() >= opponent.getArmorClass();
-	}
-
-	public void takeHit(int i) {
-		hitPoints--;
-	}
-
 	public void setAbilityScore(String abilityName, int abilityScore) {
 		abilities.setAbilityScore(abilityName, abilityScore);
 	}
