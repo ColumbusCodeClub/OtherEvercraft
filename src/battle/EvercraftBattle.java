@@ -21,18 +21,22 @@ public class EvercraftBattle {
 		this.aggressor = aggressor;
 		if (!shouldTakeHit(victim)) return;
 		if (isCriticalRoll()){
-			victim.takeHit(CRITICAL_HIT);
+			victim.takeHit(Math.max(CRITICAL_HIT + 2*addStrengthModifier(), 1));
 		}else{
-			victim.takeHit(HIT);
+			victim.takeHit(Math.max(HIT + addStrengthModifier(), 1));
 		}
 	}
 	
 	private boolean shouldTakeHit(EvercraftCharacter victim) {
-		return (dieRoll + addRollValueOfOneForEach2LevelsOfCharacter()) >= victim.getArmorClass();
+		return (dieRoll + addRollValueOfOneForEach2LevelsOfCharacter() + addStrengthModifier()) >= victim.getArmorClass();
 	}
 	
 	private int addRollValueOfOneForEach2LevelsOfCharacter() {
 		return aggressor.characterLevelValue() / 2;
+	}
+	
+	private int addStrengthModifier() {
+		return -5 + (int)Math.floor(aggressor.getAbilityScore("strength")/2);
 	}
 	
 	private boolean isCriticalRoll() {
