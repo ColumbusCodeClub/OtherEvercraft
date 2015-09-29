@@ -24,12 +24,15 @@ public class EvercraftCharacterTest {
 	@Mock
 	EvercraftCharacter opponent;
 	
+	@Mock
+	Level level;
+	
 	EvercraftCharacter underTest;
 	
 	@Before
 	public void setup() {
-		underTest = new EvercraftCharacter();
 		initMocks(this);
+		underTest = new EvercraftCharacter(level);
 	}
 	
 	@Test
@@ -52,11 +55,13 @@ public class EvercraftCharacterTest {
 	@Test
 	public void shouldHaveClassArmorHitPointsDefaultTo5()
 	{
+		when(level.getLevel()).thenReturn(1);
 		assertThat(underTest.getHitPoints(), is(5));
 	}
 	
 	@Test
 	public void shouldDecreaseHitPointsByOneWhenHit() {
+		when(level.getLevel()).thenReturn(1);
 		underTest.takeHit(1);
 		assertThat(underTest.getHitPoints(), is(4));
 	}
@@ -82,6 +87,26 @@ public class EvercraftCharacterTest {
 	public void shouldNotSetStrengthAbove20() {
 		underTest.setStrength(21);
 		assertThat(underTest.getStrength(), is(20));
+	}
+	
+	@Test
+	public void anIncreaseInLevelShouldIncreaseHitPointsByOne() {
+		when(level.getLevel()).thenReturn(2);
+		
+		assertThat(underTest.getHitPoints(), is(6));
+	}
+	
+	@Test
+	public void anIncreaseIn2LevelsShouldIncreaseHitPointsByTwo(){
+		when(level.getLevel()).thenReturn(3);
+		assertThat(underTest.getHitPoints(), is(7));
+	}
+	
+	@Test
+	public void levelShouldDefaultToOne() {
+		underTest = new EvercraftCharacter();
+		
+		assertThat(underTest.characterLevelValue(), is(1));
 	}
 	
 }

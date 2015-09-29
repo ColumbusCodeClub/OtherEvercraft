@@ -7,6 +7,7 @@ public class EvercraftBattle {
 
 	private static Die die;
 	private int dieRoll;
+	private EvercraftCharacter aggressor;
 	
 	private static int HIT = 1;
 	private static int CRITICAL_HIT = 2;
@@ -17,6 +18,7 @@ public class EvercraftBattle {
 
 	public void battle(EvercraftCharacter aggressor, EvercraftCharacter victim) {
 		dieRoll = die.roll();
+		this.aggressor = aggressor;
 		if (!shouldTakeHit(victim)) return;
 		if (isCriticalRoll()){
 			victim.takeHit(CRITICAL_HIT);
@@ -26,7 +28,11 @@ public class EvercraftBattle {
 	}
 	
 	private boolean shouldTakeHit(EvercraftCharacter victim) {
-		return dieRoll > victim.getArmorClass();
+		return (dieRoll + addRollValueOfOneForEach2LevelsOfCharacter()) >= victim.getArmorClass();
+	}
+	
+	private int addRollValueOfOneForEach2LevelsOfCharacter() {
+		return aggressor.characterLevelValue() / 2;
 	}
 	
 	private boolean isCriticalRoll() {

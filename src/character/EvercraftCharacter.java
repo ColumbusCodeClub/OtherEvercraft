@@ -3,11 +3,25 @@ package character;
 
 public class EvercraftCharacter {
 
+	private static final int INITIAL_LEVEL_OFFSET = 1;
 	private String name;
 	private Alignment alignment;
 	private Integer armorClass = 10;
 	private Integer hitPoints = 5;
 	private Integer strength = 10;
+	private Level level;
+	
+	public EvercraftCharacter(Level level) {
+		this.level = level;
+	}
+
+	public EvercraftCharacter() {
+		this(new Level());
+	}
+
+	public int characterLevelValue() {
+		return level.getLevel();
+	}
 	
 	public void setName(String name) {
 		this.name = name;
@@ -30,9 +44,14 @@ public class EvercraftCharacter {
 	}
 
 	public Integer getHitPoints() {
-		return hitPoints;
+		return hitPoints + levelHitPointIncrease();
 	}
 
+	private int levelHitPointIncrease() {
+		return level.getLevel() - INITIAL_LEVEL_OFFSET;
+	}
+	
+	
 	public boolean isAttackHit(Die die, EvercraftCharacter opponent) {
 		return die.roll() >= opponent.getArmorClass();
 	}
