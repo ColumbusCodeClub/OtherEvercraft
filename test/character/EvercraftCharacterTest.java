@@ -102,4 +102,11 @@ public class EvercraftCharacterTest {
 		assertThat(underTest.getHitPoints(), is(7));
 	}
 	
+	@Test
+	public void levelShouldDefaultToOne() {
+		underTest = new EvercraftCharacter();
+		
+		assertThat(underTest.characterLevelValue(), is(1));
+	}
+	
 }

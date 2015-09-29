@@ -15,6 +15,10 @@ public class EvercraftCharacter {
 		this.level = level;
 	}
 
+	public EvercraftCharacter() {
+		this(new Level());
+	}
+
 	public int characterLevelValue() {
 		return level.getLevel();
 	}
