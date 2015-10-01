@@ -80,10 +80,4 @@ public class EvercraftCharacterTest {
 		verify(abilities, times(1)).setAbilityScore(ABILITY_NAME, ABILITY_SCORE);
 	}
 	
-	@Test
-	public void shouldGetAbilityScore() {
-		when(abilities.getAbilityScore(ABILITY_NAME)).thenReturn(ABILITY_SCORE);
-		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(ABILITY_SCORE));
-	}
-	
 }

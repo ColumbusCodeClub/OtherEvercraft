@@ -26,7 +26,7 @@ public class ModifiedCharacter {
 	}
 
 	public int getDefense() {
-		return character.getArmorClass() + character.getAbilityScore("dexterity").getModifier();
+		return character.getArmorClass() + character.getDexterity().getModifier();
 	}
 
 	public void takeHit(int attackPower) {
@@ -39,8 +39,8 @@ public class ModifiedCharacter {
 	
 	private int baseCharacterHitPoints() {
 		int baseCharacterHitPoints = character.getHitPoints() 
-				+ (character.characterLevelValue()-1)*(5+character.getAbilityScore("constitution").getModifier()) 
-				+ character.getAbilityScore("constitution").getModifier();
+				+ (character.characterLevelValue()-1)*(5+character.getConstitution().getModifier()) 
+				+ character.getConstitution().getModifier();
 		return Math.max(baseCharacterHitPoints, MIN_MODIFIED_VALUE);
 	}
 	

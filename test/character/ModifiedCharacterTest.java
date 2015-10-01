@@ -49,9 +49,6 @@ public class ModifiedCharacterTest {
 		assertThat(underTest.getAttackPower(), is(3));
 	}
 
-	private OngoingStubbing<Ability> whenGettingStrength() {
-		return when(character.getStrength());
-	}
 	
 	@Test
 	public void shouldNeverReturnAttackPowerOfLessThanOne() {
@@ -73,27 +70,28 @@ public class ModifiedCharacterTest {
 	
 	@Test
 	public void shouldReturnDefenseBasedOnDexterityModifier() {
-		whenGettingAbility("dexterity").thenReturn(ADDITIVE_ABILITY_SCORE);
+		whenGettingDexterity().thenReturn(ADDITIVE_ABILITY_SCORE);
 		assertThat(underTest.getDefense(), is(12));
 	}
-	
+
 	@Test
 	public void shouldReturnCurrentHitPointsBasedOnLevelAndConstitutionModifier() {
-		whenGettingAbility("constitution").thenReturn(ADDITIVE_ABILITY_SCORE);
+		whenGettingConstitution().thenReturn(ADDITIVE_ABILITY_SCORE);
 		when(character.characterLevelValue()).thenReturn(2);
 		assertThat(underTest.getCurrentHitPoints(), is(14));
 	}
+
 	
 	@Test
 	public void shouldNeverAllowCharacterBaseHitpointsToBeBelowOne() {
-		whenGettingAbility("constitution").thenReturn(SUBTRACTIVE_ABILITY_SCORE);
+		whenGettingConstitution().thenReturn(SUBTRACTIVE_ABILITY_SCORE);
 		when(character.characterLevelValue()).thenReturn(1);
 		assertThat(underTest.getCurrentHitPoints(), is(MINIMUM_MODIFIED_VALUE));
 	}
 	
 	@Test
 	public void shouldTakeDamageAwayFromCurrentBaseHitPoints() {
-		whenGettingAbility("constitution").thenReturn(ADDITIVE_ABILITY_SCORE);
+		whenGettingConstitution().thenReturn(ADDITIVE_ABILITY_SCORE);
 		when(character.characterLevelValue()).thenReturn(2);
 		underTest.takeHit(4);
 		assertThat(underTest.getCurrentHitPoints(), is(10));
@@ -103,20 +101,27 @@ public class ModifiedCharacterTest {
 	@Ignore
 	public void eachEvenCharacterLevelShouldIncreaseRollLevelByOne() {
 		doReturn(2).when(character).characterLevelValue();
-		doReturn(new Ability(10)).when(character).getAbilityScore("strength");
+		doReturn(new Ability(10)).when(character).getStrength();
 		assertThat(underTest.getRollModifier(), is(1));
 	}
 	
 	@Ignore
 	public void eachOddCharacterLevelShouldNotIncreaseRollLevelByOne() {
 		doReturn(3).when(character).characterLevelValue();
-		doReturn(new Ability(10)).when(character).getAbilityScore("strength");
+		doReturn(new Ability(10)).when(character).getStrength();
 		assertThat(underTest.getRollModifier(), is(1));
 	}
 	
-
-	private OngoingStubbing<Ability> whenGettingAbility(String abilityName) {
-		return when(character.getAbilityScore(abilityName));
+	private OngoingStubbing<Ability> whenGettingDexterity() {
+		return when(character.getDexterity());
 	}
 	
+	private OngoingStubbing<Ability> whenGettingStrength() {
+		return when(character.getStrength());
+	}
+
+	private OngoingStubbing<Ability> whenGettingConstitution() {
+		return when(character.getConstitution());
+	}
+
 }
