@@ -14,19 +14,19 @@ public class ModifiedCharacter {
 	}
 
 	public int getRollModifier() {
-		return character.characterLevelValue()/2 + getModifierForAbility("strength");
+		return character.characterLevelValue()/2 + character.getStrength().getModifier();
 	}
 
 	public int getAttackPower() {
-		return Math.max(BASE_ATTACK_POWER + getModifierForAbility("strength"), MIN_MODIFIED_VALUE);
+		return Math.max(BASE_ATTACK_POWER + character.getStrength().getModifier(), MIN_MODIFIED_VALUE);
 	}
 
 	public int getCriticalHitAttackPower() {
-		return Math.max(CRITICAL_HIT_BASE_ATTACK_POWER + 2*getModifierForAbility("strength"), MIN_MODIFIED_VALUE);
+		return Math.max(CRITICAL_HIT_BASE_ATTACK_POWER + 2*character.getStrength().getModifier(), MIN_MODIFIED_VALUE);
 	}
 
 	public int getDefense() {
-		return character.getArmorClass() + getModifierForAbility("dexterity");
+		return character.getArmorClass() + character.getAbilityScore("dexterity").getModifier();
 	}
 
 	public void takeHit(int attackPower) {
@@ -37,14 +37,10 @@ public class ModifiedCharacter {
 		return baseCharacterHitPoints() - damageTaken;
 	}
 	
-	private int getModifierForAbility(String abilityName) {
-		return -5 + (int)Math.floor(character.getAbilityScore(abilityName) / 2);
-	}
-	
 	private int baseCharacterHitPoints() {
 		int baseCharacterHitPoints = character.getHitPoints() 
-				+ (character.characterLevelValue()-1)*(5+getModifierForAbility("constitution")) 
-				+ getModifierForAbility("constitution");
+				+ (character.characterLevelValue()-1)*(5+character.getAbilityScore("constitution").getModifier()) 
+				+ character.getAbilityScore("constitution").getModifier();
 		return Math.max(baseCharacterHitPoints, MIN_MODIFIED_VALUE);
 	}
 	

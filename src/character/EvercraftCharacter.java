@@ -54,8 +54,12 @@ public class EvercraftCharacter {
 		abilities.setAbilityScore(abilityName, abilityScore);
 	}
 
-	public int getAbilityScore(String abilityName) {
+	public Ability getAbilityScore(String abilityName) {
 		return abilities.getAbilityScore(abilityName);
+	}
+
+	Ability getStrength() {
+		return getAbilityScore("strength");
 	}
 	
 }

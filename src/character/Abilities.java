@@ -1,9 +1,7 @@
 package character;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Abilities {
 
@@ -16,8 +14,9 @@ public class Abilities {
 		abilityScores.put(abilityName, Math.min(Math.max(abilityScore, MIN_ABILITY_SCORE), MAX_ABILITY_SCORE));
 	}
 
-	public int getAbilityScore(String abilityName) {
-		return abilityScores.containsKey(abilityName) ? abilityScores.get(abilityName) : DEFAULT_ABILITY_SCORE;
+	public Ability getAbilityScore(String abilityName) {
+		int foo = abilityScores.containsKey(abilityName) ? abilityScores.get(abilityName) : DEFAULT_ABILITY_SCORE;
+		return new Ability(foo);
 	}
 		
 }
