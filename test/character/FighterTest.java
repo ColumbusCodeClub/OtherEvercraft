@@ -23,7 +23,7 @@ public class FighterTest {
 	}
 
 	@Test
-	public void fighterAttackRollsIncreaseForEveryOneLevel() {
+	public void fighterHitPointsGoUpBy10ForEveryLevelIncrease() {
 		when(level.getLevel()).thenReturn(2);
 		assertThat(underTest.getHitPoints(), is(15));
 	}
