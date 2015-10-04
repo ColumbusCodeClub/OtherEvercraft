@@ -24,8 +24,8 @@ public class FighterTest {
 
 	@Test
 	public void fighterAttackRollsIncreaseForEveryOneLevel() {
-		when(level.getLevel()).thenReturn(4);
-		assertThat(underTest.getHitPoints(), is(9));
+		when(level.getLevel()).thenReturn(2);
+		assertThat(underTest.getHitPoints(), is(15));
 	}
 
 }

@@ -90,16 +90,9 @@ public class EvercraftCharacterTest {
 	}
 	
 	@Test
-	public void anIncreaseInLevelShouldIncreaseHitPointsByOne() {
+	public void anIncreaseInOneLevelShouldIncreaseHitPointsByFive(){
 		when(level.getLevel()).thenReturn(2);
-		
-		assertThat(underTest.getHitPoints(), is(6));
-	}
-	
-	@Test
-	public void anIncreaseIn2LevelsShouldIncreaseHitPointsByTwo(){
-		when(level.getLevel()).thenReturn(3);
-		assertThat(underTest.getHitPoints(), is(7));
+		assertThat(underTest.getHitPoints(), is(10));
 	}
 	
 	@Test

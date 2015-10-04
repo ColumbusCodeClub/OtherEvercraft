@@ -44,7 +44,7 @@ public class EvercraftCharacter {
 	}
 
 	public Integer getHitPoints() {
-		return hitPoints + (level.getLevel() - INITIAL_LEVEL_OFFSET);
+		return hitPoints + ((level.getLevel() - INITIAL_LEVEL_OFFSET) * 5);
 	}
 
 	public boolean isAttackHit(Die die, EvercraftCharacter opponent) {
