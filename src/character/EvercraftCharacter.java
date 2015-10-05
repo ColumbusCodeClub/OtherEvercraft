@@ -44,14 +44,9 @@ public class EvercraftCharacter {
 	}
 
 	public Integer getHitPoints() {
-		return hitPoints + levelHitPointIncrease();
+		return hitPoints + ((level.getLevel() - INITIAL_LEVEL_OFFSET) * 5);
 	}
 
-	private int levelHitPointIncrease() {
-		return level.getLevel() - INITIAL_LEVEL_OFFSET;
-	}
-	
-	
 	public boolean isAttackHit(Die die, EvercraftCharacter opponent) {
 		return die.roll() >= opponent.getArmorClass();
 	}
@@ -68,6 +63,10 @@ public class EvercraftCharacter {
 	
 	public Integer getStrength() {
 		return strength;
+	}
+
+	public int levelRollAdjustment() {
+		return this.characterLevelValue() / 2;
 	}
 
 }

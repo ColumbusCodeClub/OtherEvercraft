@@ -32,7 +32,7 @@ public class EvercraftBattle {
 	}
 	
 	private int addRollValueOfOneForEach2LevelsOfCharacter() {
-		return aggressor.characterLevelValue() / 2;
+		return aggressor.levelRollAdjustment();
 	}
 	
 	private boolean isCriticalRoll() {
