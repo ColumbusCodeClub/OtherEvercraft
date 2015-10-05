@@ -31,27 +31,27 @@ public class AbilitiesTest {
 	@Test
 	public void shouldSetAbility() {
 		underTest.setAbilityScore(ABILITY_NAME, ABILITY_SCORE);
-		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifier(2)));
+		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifierValue(2)));
 	}
 	
 	@Test
 	public void shouldReturnDefaultAbilityIfAccessingUndefinedAbility() {
-		assertThat(underTest.getAbilityScore(UNDEFINED_ABILITY_NAME), is(abilityWithModifier(0)));
+		assertThat(underTest.getAbilityScore(UNDEFINED_ABILITY_NAME), is(abilityWithModifierValue(0)));
 	}
 	
 	@Test
 	public void shouldReturnMinAbilityForValuesUnder1() {
 		underTest.setAbilityScore(ABILITY_NAME, LOW_ABILITY_SCORE);
-		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifier(-5)));
+		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifierValue(-5)));
 	}
 	
 	@Test
 	public void shouldReturnMaxAbilityForValuesOver20() {
 		underTest.setAbilityScore(ABILITY_NAME, HIGH_ABILITY_SCORE);
-		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifier(5)));
+		assertThat(underTest.getAbilityScore(ABILITY_NAME), is(abilityWithModifierValue(5)));
 	}
 	
-	private Matcher<Ability> abilityWithModifier(final int modifier) {
+	private Matcher<Ability> abilityWithModifierValue(final int modifier) {
 		return new TypeSafeMatcher<Ability>() {
 
 			@Override
@@ -63,12 +63,12 @@ public class AbilitiesTest {
 			@Override
 		     public void describeMismatchSafely(final Ability item, final Description description) {
 				description.appendText(" was ability with modifier ");
-				description.appendValue(item.getModifier());
+				description.appendValue(item.getModifier().getValue());
 			}
 
 			@Override
 			protected boolean matchesSafely(Ability item) {
-				return item.getModifier() == modifier;
+				return item.getModifier().getValue() == modifier;
 			}
 		};
 	}

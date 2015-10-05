@@ -66,4 +66,7 @@ public class EvercraftCharacter {
 		return abilities.getAbilityScore("constitution");
 	}
 	
+	Modifier getLevelModifier() {
+		return new Modifier(characterLevelValue()/2);
+	}
 }

@@ -12,9 +12,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import character.Alignment;
-import character.Die;
-import character.EvercraftCharacter;
+import activities.RollDie;
 
 public class EvercraftCharacterTest {
 	
@@ -30,7 +28,7 @@ public class EvercraftCharacterTest {
 	Alignment alignment;
 	
 	@Mock
-	Die die;
+	RollDie die;
 	
 	@Mock
 	EvercraftCharacter opponent;

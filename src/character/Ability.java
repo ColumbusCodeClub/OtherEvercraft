@@ -8,8 +8,8 @@ public class Ability {
 		this.abilityScore = abilityScore;
 	}
 
-	int getModifier() {
-		return -5 + abilityScore / 2;
+	public Modifier getModifier() {
+		return new Modifier(-5 + abilityScore / 2);
 	}
 
 }
