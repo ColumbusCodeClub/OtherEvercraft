@@ -14,6 +14,7 @@ import org.mockito.Spy;
 
 import character.Die;
 import character.EvercraftCharacter;
+import character.Fighter;
 import character.Level;
 
 
@@ -30,6 +31,9 @@ public class EvercraftBattleTest {
 	
 	@Spy
 	private EvercraftCharacter aggressor = new EvercraftCharacter(level);
+
+	@Spy
+	private Fighter fighter = new Fighter(level);
 	
 	EvercraftBattle underTest;
 
@@ -87,5 +91,16 @@ public class EvercraftBattleTest {
 		
 		verify(victim, times(0)).takeHit(Mockito.anyInt());
 	}
+	
+	@Test
+	public void eachFighterLevelShouldIncreaseRollLevelByOne() {
+		doReturn(3).when(fighter).characterLevelValue();
+		when(die.roll()).thenReturn(8);
+		when(victim.getArmorClass()).thenReturn(10);
+
+		underTest.battle(fighter, victim);
+		
+		verify(victim, times(1)).takeHit(Mockito.anyInt());
+	}	
 	
 }

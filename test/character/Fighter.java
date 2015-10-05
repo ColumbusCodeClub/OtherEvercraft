@@ -15,4 +15,9 @@ public class Fighter extends EvercraftCharacter {
 		return super.getHitPoints() + ((level.getLevel() - INITIAL_LEVEL_OFFSET) * FIGHTER_HIT_POINT_LEVEL_INCREASE);
 	}
 	
+	@Override
+	public int levelRollAdjustment() {
+		return this.characterLevelValue();
+	}
+	
 }

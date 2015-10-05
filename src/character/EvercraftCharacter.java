@@ -65,4 +65,8 @@ public class EvercraftCharacter {
 		return strength;
 	}
 
+	public int levelRollAdjustment() {
+		return this.characterLevelValue() / 2;
+	}
+
 }
