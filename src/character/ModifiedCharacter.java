@@ -1,5 +1,8 @@
 package character;
 
+import activities.AttackOutcome;
+import activities.BasicAttack;
+import activities.DieRollOutcome;
 import activities.Outcome;
 import activities.RollDie;
 
@@ -45,6 +48,11 @@ public class ModifiedCharacter {
 
 	public Outcome preform(RollDie rollDie, Outcome previousOutcome) {
 		return rollDie.apply(character.getStrength().getModifier(), character.getLevelModifier());
+	}
+	
+	public Outcome preform(BasicAttack attack, Outcome previousOutcome) {
+		attack.setAssociatedDieRoll(previousOutcome.getOutcome());
+		return attack.apply(character.getStrength().getModifier());
 	}
 	
 }

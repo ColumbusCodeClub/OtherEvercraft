@@ -3,6 +3,8 @@ package character;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -15,8 +17,11 @@ import org.junit.Test;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.stubbing.OngoingStubbing;
 
+import activities.AttackOutcome;
+import activities.BasicAttack;
 import activities.DieRollOutcome;
 import activities.Outcome;
 import activities.RollDie;
@@ -40,7 +45,7 @@ public class ModifiedCharacterTest {
 	private RollDie rollDie;
 	
 	@Mock
-	private Outcome dieRollOutcome;
+	private DieRollOutcome dieRollOutcome;
 	
 	@Mock
 	private Ability value;
@@ -49,49 +54,17 @@ public class ModifiedCharacterTest {
 	@Mock
 	private Modifier modifier;
 	
+	@Spy
+	private BasicAttack attack;
+	
 	@Before
 	public void setup() {
 		initMocks(this);
 		underTest = new ModifiedCharacter(character);
 		when(character.getHitPoints()).thenReturn(DEFAULT_CHARACTER_HIT_POINTS);
 		when(character.getArmorClass()).thenReturn(DEFAULT_CHARACTER_ARMOR_CLASS);
-		when(rollDie.getTotalAttackRoll((Outcome)Mockito.any())).thenReturn(10);
 	}
-	
-	@Test
-	public void shouldReturnRollModifierBasedOnLevelAndStrengthModifier() {
-		whenGettingStrength().thenReturn(value);
-		when(value.getModifier()).thenReturn(modifier);
-		when(character.getLevelModifier()).thenReturn(modifier);
-		when(rollDie.apply(modifier, modifier)).thenReturn(new DieRollOutcome(13));
-		assertThat(underTest.preform(rollDie, outcome), is(outcomeOf(13)));
-	}
-	
-	@Test
-	public void shouldReturnAttackPowerBasedOnStrengthModifier() {
-		whenGettingStrength().thenReturn(ADDITIVE_ABILITY_SCORE);
-		assertThat(underTest.getAttackPower(), is(3));
-	}
-
-	
-	@Test
-	public void shouldNeverReturnAttackPowerOfLessThanOne() {
-		whenGettingStrength().thenReturn(SUBTRACTIVE_ABILITY_SCORE);
-		assertThat(underTest.getAttackPower(), is(MINIMUM_MODIFIED_VALUE));
-	}
-	
-	@Test
-	public void shouldReturnCriticalHitAttackPowerBasedOnDoubledStrengthModifier() {
-		whenGettingStrength().thenReturn(ADDITIVE_ABILITY_SCORE);
-		assertThat(underTest.getCriticalHitAttackPower(), is(6));
-	}
-	
-	@Test
-	public void shouldNeverReturnCriticalHitAttackPowerOfLessThanOne() {
-		whenGettingStrength().thenReturn(SUBTRACTIVE_ABILITY_SCORE);
-		assertThat(underTest.getCriticalHitAttackPower(), is(MINIMUM_MODIFIED_VALUE));
-	}
-	
+		
 	@Test
 	public void shouldReturnDefenseBasedOnDexterityModifier() {
 		whenGettingDexterity().thenReturn(ADDITIVE_ABILITY_SCORE);
@@ -147,6 +120,24 @@ public class ModifiedCharacterTest {
 		when(character.getLevelModifier()).thenReturn(modifier);
 		when(rollDie.apply(modifier, modifier)).thenReturn(new DieRollOutcome(13));
 		assertThat(underTest.preform(rollDie, outcome), is(outcomeOf(13)));
+	}
+	
+	@Test
+	public void shouldReturnAssociatedDieRollWithinAttackOutcome() {
+		when(value.getModifier()).thenReturn(modifier);
+		when(character.getStrength()).thenReturn(value);
+		when(character.getLevelModifier()).thenReturn(modifier);
+		when(dieRollOutcome.getOutcome()).thenReturn(10);
+		underTest.preform(attack, dieRollOutcome);
+		verify(attack, times(1)).setAssociatedDieRoll(10);
+	}
+	
+	@Test
+	public void shouldReturnAttackOutcomeBasedOnStrengthModifier() {
+		whenGettingStrength().thenReturn(value);
+		when(value.getModifier()).thenReturn(modifier);
+		when(attack.apply(modifier)).thenReturn(new AttackOutcome(3));
+		assertThat(underTest.preform(attack, dieRollOutcome), is(outcomeOf(3)));
 	}
 	
 	private OngoingStubbing<Ability> whenGettingDexterity() {

@@ -4,15 +4,9 @@ import character.Die;
 import character.Modifier;
 import battle.EvercraftBattle;
 
-public class RollDie {
-
-	
+public class RollDie {	
 	private Die die = new Die();
 
-	public int getTotalAttackRoll(Outcome initialOutcome) {
-		return die.roll();
-	}
-	
 	public DieRollOutcome apply(Modifier... modifiers) {
 		int roll = die.roll();
 		for (Modifier modifier : modifiers) {
